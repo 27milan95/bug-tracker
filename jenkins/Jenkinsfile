@@ -1,5 +1,5 @@
 pipeline {
- 
+    agent any
 
     stages {
         stage('Launch Application') {
@@ -24,7 +24,7 @@ pipeline {
                     args '-u 0 --network=host'
                 }
             }
-            step{
+            steps {
                 dir('tests-api')
                 sh 'npx wait-port http://localhost:8080/api/health -t 30000'
 
