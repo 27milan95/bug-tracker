@@ -1,13 +1,35 @@
 pipeline {
-    agent any
+ 
 
     stages {
-        stage('Hello') {
+        stage('Launch Application') {
+            agent {
+                docker{
+                    image 'docker:24-cli'
+                    reuseNode true
+                    args '-v/ba/run/docker.sock:/var/run/docker.sock -u 0'
+                }
+            }
             steps {
                 echo 'Hello World'
-                // sh '''
-                // Hello this is my first Jenkins pipeline
-                // '''
+                sh 'docker compose up --build -d'
+            }
+        }
+
+        stage('API tests'){
+            agent{
+                docker{
+                    image 'mcr.microsoft.com/playwright:v1.51.0-noble'
+                    reuseNode true
+                    args '-u 0 --network=host'
+                }
+            }
+            step{
+                dir('tests-api')
+                sh 'npx wait-port http://localhost:8080/api/health -t 30000'
+
+                sh 'npm ci'
+                sh 'npx playwright test'
             }
         }
     }
