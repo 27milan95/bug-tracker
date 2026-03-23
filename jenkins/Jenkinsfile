@@ -5,9 +5,9 @@ pipeline {
         stage('Hello') {
             steps {
                 echo 'Hello World'
-                sh '''
-                Hello this is my first Jenkins pipeline
-                '''
+                // sh '''
+                // Hello this is my first Jenkins pipeline
+                // '''
             }
         }
     }
