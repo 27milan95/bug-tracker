@@ -5,9 +5,9 @@ pipeline {
         stage('Launch Application') {
             agent {
                 docker{
-                    image 'docker:24-cli'
+                    image 'docker:27.5.1'
                     reuseNode true
-                    args '-v/ba/run/docker.sock:/var/run/docker.sock -u 0'
+                    args '-v/var/run/docker.sock:/var/run/docker.sock -u 0'
                 }
             }
             steps {
